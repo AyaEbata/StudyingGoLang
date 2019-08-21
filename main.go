@@ -3,6 +3,8 @@ package main
 import (
     "fmt"
     "math"
+    "runtime"
+    "time"
 )
 
 var i, j int = 1, 2  // 初期化子(initializer)
@@ -60,6 +62,12 @@ func split(sum int) (x, y int) {
 }
 
 func grammar() {
+    defer fmt.Println("end")  // 関数の終わりに呼び出される
+
+    for i := 0; i < 5; i++ {
+        defer fmt.Println(i)  // 4から出力される
+    }
+
     // for
     sum := 0
     for i := 0; i < 10; i++ {  // カッコいらない
@@ -75,8 +83,33 @@ func grammar() {
     fmt.Println(sum2)
 
     // if
-    x := 2
+    x := 6
     if x < 5 {  // カッコいらない&ステートメント書ける（変数書いて条件書ける）
         fmt.Println(x)
+    } else {
+        fmt.Println("elseだよ")
+    }
+
+    // switch
+    fmt.Print("Go runs on ")
+    switch os := runtime.GOOS; os {  // ここにも変数置ける（書かなくてもいい）
+        case "darwin":
+            fmt.Println("OS X.")
+        case "linux":
+            fmt.Println("Linux.")
+        default:
+            // freebsd, openbsd,
+            // plan9, windows...
+            fmt.Printf("%s.", os)
+    }
+
+    t := time.Now()
+    switch {  // switch trueを意味していて、caseで条件を書く
+       case t.Hour() < 12:
+            fmt.Println("Good morning!")
+        case t.Hour() < 17:
+            fmt.Println("Good afternoon.")
+        default:
+            fmt.Println("Good evening.")
     }
 }
